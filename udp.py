@@ -2,10 +2,9 @@
 # -*- coding: utf-8 -*-
 """
 
-Зробіть UDP сервер, який очікує повідомлення від нових пристроїв в мережі. Він 
-приймає повідомлення відповідного формату, в якому будуть ідентифікатор пристрою
-і друкує нові підключення в консоль. Створіть UDP клієнта, який буде відправляти
-унікальний індентифікатор пристрою до серверу, повідомляючи про свою присутність.
+Create a UDP server that listens for new devices on the network. 
+He accepts messages of a specific format, which will be the device ID, and prints new connections to the console. 
+Create a UDP client that will send a unique device ID to the server, notifying its presence.
 
 @author: ~vimer
 """
