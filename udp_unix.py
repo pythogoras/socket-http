@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 '''
 
-Створити UNIX сервер, котрий приймає повідомлення з двума числами, розділеними
-комами. Сервер повинний конвертувати строкове повідомлення в два числа і 
-додавати їх. Після вдалого додавання повертати відповідь клієнту.
+Create a UNIX socket that accepts a message with two numbers separated by a comma.
+The server must convert the string message into two numbers and calculate its sum. 
+After a successful computation returns a response to the client.
 
 @author: ~vimer
 ''' 
