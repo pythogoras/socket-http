@@ -8,7 +8,7 @@ After a successful computation returns a response to the client.
 
 @author: ~vimer
 ''' 
-import socket, socketserver, os, sys, random, string
+import socket, socketserver, os, sys, random, string, re
 
 
 class Server(socketserver.BaseRequestHandler):
@@ -17,12 +17,18 @@ class Server(socketserver.BaseRequestHandler):
         if len(list_bytes) != 3:
             raise Exception('expected 3 arguments')
         list_float = [float(i) for i in list_bytes[:-1]]
+        self.__valid_address(list_bytes[-1])
         self.client_address = str(list_bytes[-1], 'utf-8')
         return sum(list_float)
     
     def __create_resp(self, data: bytes) -> bytes:
         summa = self.__req_sum(data)
         return f'Добуток чисел: {summa}'.encode(encoding='utf-8')
+    
+    def __valid_address(self, address: bytes):
+        regex = b'^[A-Z\d]{10}.client$'
+        if not re.search(regex, address):
+            raise Exception('not correct address client')
     
     def handle(self):
         data, sock = self.request
@@ -63,6 +69,28 @@ class Client():
         print(str(self.__sock.recv(1024), 'utf-8'))
         self._close()
 
+def valid_sys_arg(arg, ARG):
+    if len(sys.argv) != 2:
+        raise Exception('expected 1 argument')
+    elif arg not in ARG:
+        raise Exception('unknown argument')
+
+def start_server():
+    try:
+        server = socketserver.UnixDatagramServer('sock.server', Server)
+        server.serve_forever()
+    except KeyboardInterrupt:
+        os.remove(server.server_address)
+        server.server_close()
+        print('exit server')
+
+def start_client():
+    try:
+        client = Client('sock.server')
+        client._send()
+    except KeyboardInterrupt:
+        client._close()
+        print('exit client')
 
 if __name__ == '__main__':
     def start(arg):
@@ -74,26 +102,12 @@ if __name__ == '__main__':
         '''
         ARG = ('server', 'client')
         try:
-            if len(sys.argv) != 2:
-                raise Exception('expected 1 argument')
-            elif arg not in ARG:
-                raise Exception('unknown argument')
+            valid_sys_arg(arg, ARG)
         except Exception as error:
             print(error)
         if arg == ARG[0]:
-            try:
-                server = socketserver.UnixDatagramServer('sock.server', Server)
-                server.serve_forever()
-            except KeyboardInterrupt:
-                os.remove(server.server_address)
-                server.server_close()
-                print('exit server')
+            start_server()
         elif arg == ARG[1]:
-            try:
-                client = Client('sock.server')
-                client._send()
-            except KeyboardInterrupt:
-                client._close()
-                print('exit client')
+            start_client()
                 
     start(sys.argv[1])    
