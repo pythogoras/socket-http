@@ -6,7 +6,7 @@ Create a simple chat based on the TCP protocol that will allow multiple clients 
 
 @author: ~vimer
 '''
-import socketserver, re, socket, sys, signal
+import socketserver, re, socket, sys
 from datetime import datetime
 
 # *** SERVER ***
