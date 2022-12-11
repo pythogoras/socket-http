@@ -43,13 +43,13 @@ class ServerUDPHandler(socketserver.BaseRequestHandler):
         print(f'Пристрій {data} приєднався')
 
 
-def valid_sys_arg(arg, ARG):
+def _valid_sys_arg(arg, ARG):
     if len(sys.argv) != 2:
         raise Exception('expected 1 argument')
     elif arg not in ARG:
         raise Exception('unknown argument')
 
-def start_server():
+def _start_server():
     try:
         with socketserver.UDPServer(('127.0.0.1', 8888), ServerUDPHandler) \
         as server:
@@ -57,7 +57,7 @@ def start_server():
     except KeyboardInterrupt:
         print('server exit')
 
-def start_client():
+def _start_client():
     try:
         address = ('127.0.0.1', 8888)
         client = Client(address)
@@ -76,12 +76,12 @@ if __name__ == '__main__':
         '''
         ARG = ('server', 'client')
         try:
-            valid_sys_arg(arg, ARG)
+            _valid_sys_arg(arg, ARG)
         except Exception as error:
             print(error)
         if arg == ARG[0]:
-            start_server()
+            _start_server()
         elif arg == ARG[1]:
-            start_client()
+            _start_client()
     
     start(sys.argv[1])

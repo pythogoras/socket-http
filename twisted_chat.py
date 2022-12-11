@@ -22,8 +22,8 @@ class ClientChat(Protocol):
     
     def connectionMade(self):
         signal.signal(signal.SIGINT, self.__send_message)
-        print('for input message CTRL + C\n')
-        print('for exit input "exit"')
+        print('for input message CTRL + C')
+        print('for exit input "exit()"')
 
     def dataReceived(self, data: bytes):
         print(str(data, 'utf-8'))
