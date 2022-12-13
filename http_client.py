@@ -31,7 +31,7 @@ class InputData:
         data = data.strip('{}')
         data = data.split(', ')
         data = [d.split(': ') for d in data]
-        self._data = data
+        self._data = dict(data)
     
     def __input_data(self) -> None:
         print('example input parameters -- "{first_name: Test, last_name: Testerenko}"')
@@ -142,6 +142,7 @@ class RequestData(InputData, OutputData):
     def _interface(self) -> None:
         while True:
             self._input_client()
+            print(self._data)
             self._methods[self._method]()
             self._output_client()
             if self.__exit(): break
